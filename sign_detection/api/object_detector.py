@@ -1,10 +1,13 @@
+from utils.input_modifier import modify_image, modify_context
 
-def detect_object(image, context):
-    # load saved model
-    # send image and context vectors to the model
-    # get the output
-    # draw image
-    # return the output/ send image
+def detect_object(image, context, model, tokenizer):
 
-    #return context
-    return 'Blyet'
+    # PIL Image
+    image = modify_image(image)
+    context = modify_context(context, tokenizer)
+    
+    #bbox_preds, classification_preds = model.forward(image, context)
+    # vfe_in, tfe_in
+    predictions = model(image, context)
+
+    return predictions

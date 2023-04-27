@@ -31,11 +31,12 @@ const App = () => {
     formData.append('image', image);
     formData.append('context', context);
 
-    axios.post('/api/detect_sign', formData)
+    axios.post('http://localhost:5000/api/detect_sign', formData)
       .then((response) => {
         //setResultImageUrl(URL.createObjectURL(file));
         //TRICK: Save images locally
-        setResultImageUrl(response.data.imageUrl)
+        //setResultImageUrl(response.data.imageUrl);
+        setResultImageUrl(response.data);
         //setBoundingBox(response.data.boundingBox);
       })
       .catch((error) => {
@@ -56,7 +57,7 @@ const App = () => {
         <br />
         <button type="submit">Process Image</button>
       </form>
-      {imageURL && (
+      {resultImageUrl && (
         <div>
           <h2>Processed Image</h2>
           <img src={resultImageUrl} alt="Processed" />
