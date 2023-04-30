@@ -26,3 +26,5 @@ yarn-error.log*
 #api files
 ac_project
 __pycache__
+
+*.pth
