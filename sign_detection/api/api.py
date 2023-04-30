@@ -26,9 +26,9 @@ bert_tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
 # Model
 # NOT DONE: Place the concatenated_model file name in 'model_path'
-model_path = '345' 
-model = torch.load(model_path, map_location=torch.device('cpu'))
-model.eval()
+#model_path = '345' 
+#model = torch.load(model_path, map_location=torch.device('cpu'))
+#model.eval()
 
 #Dummy route for starting out
 @app.route('/api/time')
@@ -43,26 +43,27 @@ def get_current_time():
 
 @app.route('/api/detect_sign', methods=['POST'])
 def upload_image_and_context():
-    #LATER: Test & Debug
-    context = request.form.get('context')
 
+    context = request.form.get('context')
+    
+    #image_file = request.files['file']
     image_file = request.files['image']
     image_data = image_file.read()
     image = Image.open(BytesIO(image_data)).convert('RGB')
+    
 
     # Expected Shape: [1, 4] and [1, 2]
-    (bbox_preds, classification_preds) = detect_object(image, context, model, tokenizer=bert_tokenizer)
-
+    (bbox_preds, classification_preds) = detect_object(image, context, model=1, tokenizer=bert_tokenizer)
+    
     _, predicted = torch.max(classification_preds.data, dim=1)
-
     label = predicted.item()
-
+    
     image_file_name = draw_image(image, bbox_preds, label)
 
-    image_file_name = os.path.join('utils', image_file_name)
+    #image_file_name = os.path.join('api', image_file_name)
     
     return send_file(image_file_name, mimetype='image/png')
-    #return 'Blyet'
+    #return context
 
 
 

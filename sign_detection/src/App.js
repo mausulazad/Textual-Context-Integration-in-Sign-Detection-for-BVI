@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import ImageInput from './components/ImageInput';
-import TextInput from './components/TextInput';
-import ResultImage from './components/ResultImage';
+import axios from 'axios';
+import { type } from '@testing-library/user-event/dist/type';
+
+//import ImageInput from './components/ImageInput';
+//import TextInput from './components/TextInput';
+//import ResultImage from './components/ResultImage';
 
 const App = () => {
 
@@ -9,6 +12,8 @@ const App = () => {
   const [image, setImage] = useState(0);
   const [context, setContext] = useState(0);
   const [resultImageUrl, setResultImageUrl] = useState(null);
+
+  
 
   const handleImageChange = (event) => {
     const selectedImage = event.target.files[0];
@@ -36,6 +41,9 @@ const App = () => {
         //setResultImageUrl(URL.createObjectURL(file));
         //TRICK: Save images locally
         //setResultImageUrl(response.data.imageUrl);
+        //HEREEEEEEEEEEE
+        const dfs = require(`../api/${response.data}`)
+        console.log(typeof dfs);
         setResultImageUrl(response.data);
         //setBoundingBox(response.data.boundingBox);
       })
@@ -46,6 +54,13 @@ const App = () => {
   };
 
   return (
+
+    /*
+    <div className="App">
+      <p> Edit and save to reload. </p>
+    </div>
+    */
+
     <div className="App">
       <h1>Upload an sign image and enter the context of the image</h1>
       <form onSubmit={handleSubmit}>
@@ -53,19 +68,48 @@ const App = () => {
         <input id="image-input" type="file" onChange={handleImageChange} accept="image/*" />
         <br />
         <label htmlFor="text-input">Enter some text:</label>
-        <input id="text-input" type="text" value={text} onChange={handleTextChange} />
+        <input id="text-input" type="text" value={context} onChange={handleTextChange} />
         <br />
         <button type="submit">Process Image</button>
       </form>
       {resultImageUrl && (
         <div>
-          <h2>Processed Image</h2>
-          <img src={resultImageUrl} alt="Processed" />
+          <h2>{resultImageUrl}</h2>
         </div>
       )}
     </div>
+    
   );
+  
+
+  /*
+  {resultImageUrl && (
+    <div>
+      <h2>Processed Image</h2>
+      <img src={resultImageUrl} alt="Processed" />
+    </div>
+  )}
+  */
 };
+
+/*
+<div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+*/
 
 export default App;
 
